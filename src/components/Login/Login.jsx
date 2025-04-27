@@ -1,14 +1,20 @@
-import React from "react";
+import React, { use } from "react";
 import { Link } from "react-router";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
-  
-const handleLogin = (e) =>{
-  e.preventDefault();
-  const email = e.target.email.value;
-  const password = e.target.password.value;
-  console.log(email, password);
-}
+  const { logInUser } = use(AuthContext);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
+    logInUser(email, password)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => console.log(error.message));
+  };
   return (
     <div className="card bg-base-100 mx-auto mt-12 w-full max-w-sm shrink-0 shadow-2xl">
       <h1 className="text-2xl text-center pt-2 font-bold">Login now!</h1>
