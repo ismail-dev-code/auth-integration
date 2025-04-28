@@ -4,14 +4,15 @@ import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
   const { logInUser } = use(AuthContext);
+  // console.log(logInUser);
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email, password);
+    // console.log(email, password);
     logInUser(email, password)
       .then((result) => {
-        console.log(result);
+        console.log(result.user);
       })
       .catch((error) => console.log(error.message));
   };

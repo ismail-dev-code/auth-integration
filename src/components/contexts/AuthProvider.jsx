@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   createUserWithEmailAndPassword,
@@ -16,13 +16,23 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      console.log("has current user", currentUser);
-    } else {
-      console.log("current user", currentUser);
-    }
-  });
+  // onAuthStateChanged(auth, (currentUser) => {
+  //   console.log(currentUser);
+  //   if (currentUser) {
+  //     console.log("has current user", currentUser);
+  //   } else {
+  //     console.log("current user", currentUser);
+  //   }
+  // });
+
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("current user inside useEffect on auth state change", currentUser);
+    });
+    return () => {
+      unSubscribe();
+    };
+  }, []);
 
   const userInfo = {
     createUser,
