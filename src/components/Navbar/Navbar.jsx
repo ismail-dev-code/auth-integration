@@ -1,12 +1,20 @@
 import React, { use } from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import "./navbar.css";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Navbar = () => {
+  const { user, signOutUser } = use(AuthContext);
 
-  const userInfo = use(AuthContext);
-  console.log("nav", userInfo);
+  const handleSignOut = () => {
+    signOutUser()
+      .then(() => {
+        console.log("sign out successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const links = (
     <>
@@ -49,7 +57,7 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl font-bold text-blue-400">
+        <a className="btn btn-ghost text-xl font-bold text-blue-600">
           Auth Integration
         </a>
       </div>
@@ -57,7 +65,18 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {user ? (
+          <>
+            <span className="text-xs mr-3">{user.email}</span>{" "}
+            <a onClick={handleSignOut} className="btn">
+              Sign Out
+            </a>
+          </>
+        ) : (
+          <Link className="btn" to={"/login"}>
+            Log In
+          </Link>
+        )}
       </div>
     </div>
   );
